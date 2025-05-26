@@ -118,6 +118,47 @@
       font-size: 1.3rem;
     }
   }
+
+  /* Cookie Consent Dialog Styles */
+  #cookie-consent {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #2f5233;
+    color: #e6f2e9;
+    padding: 18px 20px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.15);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  #cookie-consent p {
+    margin: 0;
+    flex: 1 1 300px;
+  }
+
+  #cookie-consent button {
+    background-color: #9cc497;
+    color: #2f5233;
+    border: none;
+    margin-left: 12px;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+    flex: 0 0 auto;
+  }
+
+  #cookie-consent button:hover {
+    background-color: #b7d1a2;
+  }
 </style>
 </head>
 <body>
@@ -169,10 +210,65 @@
   <p>If you have questions or concerns about our use of cookies or this policy, please contact us via email at <a href="mailto:privacy@greenbloomsflaura.com">privacy@greenbloomsflaura.com</a> or visit our <a href="contact.html">Contact</a> page.</p>
   
   <p>Thank you for choosing Greenbloomsflaura. We are committed to providing you with a transparent and user-friendly online experience.</p>
-  
 </main>
+
+<!-- Cookie Consent Dialog -->
+<div id="cookie-consent" role="dialog" aria-live="polite" aria-label="Cookie Consent">
+  <p>We use cookies to enhance your experience on Greenbloomsflaura. By continuing to use our site, you consent to cookies. You can accept or decline below.</p>
+  <div>
+    <button id="accept-cookies" type="button">Accept</button>
+    <button id="decline-cookies" type="button">Decline</button>
+  </div>
+</div>
+
 <footer role="contentinfo">
   &copy; 2024 Greenbloomsflaura. All rights reserved.
 </footer>
+
+<script>
+  (function() {
+    const consentKey = 'greenbloomsflaura-cookie-consent';
+    const consentDiv = document.getElementById('cookie-consent');
+    const acceptBtn = document.getElementById('accept-cookies');
+    const declineBtn = document.getElementById('decline-cookies');
+
+    function hideConsent() {
+      consentDiv.style.display = 'none';
+    }
+
+    function showConsent() {
+      consentDiv.style.display = 'flex';
+    }
+
+    function getConsent() {
+      return localStorage.getItem(consentKey);
+    }
+
+    function setConsent(value) {
+      localStorage.setItem(consentKey, value);
+    }
+
+    // Initialize consent dialog on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const existingConsent = getConsent();
+      if (existingConsent === 'accepted' || existingConsent === 'declined') {
+        hideConsent();
+      } else {
+        showConsent();
+      }
+    });
+
+    acceptBtn.addEventListener('click', function() {
+      setConsent('accepted');
+      hideConsent();
+    });
+
+    declineBtn.addEventListener('click', function() {
+      setConsent('declined');
+      hideConsent();
+    });
+  })();
+</script>
 </body>
 </html>
+
